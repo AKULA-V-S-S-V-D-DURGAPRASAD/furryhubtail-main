@@ -1,6 +1,9 @@
 package com.furryhub.petservices.model.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -18,34 +21,32 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
+    private Long id;
 
     // One-to-One with Customer
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-    @JsonIgnore 
+    @JsonIgnore
     private Customer customer;
 
     // One-to-One with Provider
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-    @JsonIgnore 
+    @JsonIgnore
     private Provider provider;
-    
+
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
     @Column(nullable = false, unique = true)
     private String email;
-    
+
     @NotBlank(message = "Password is required")
     @Column(nullable = false)
     private String password;
-    
+
     @NotBlank(message = "First name is required")
     @Column(nullable = false)
     private String firstName;
@@ -53,7 +54,11 @@ public class User {
     @NotBlank(message = "Last name is required")
     @Column(nullable = false)
     private String lastName;
-    
+
+    /** ✅ added phone number so user.getPhone() works */
+    @Column(length = 15)
+    private String phone;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -72,11 +77,11 @@ public class User {
 
     @Column(name = "is_email_verified")
     private Boolean isEmailVerified = false;
-    
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
+
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;

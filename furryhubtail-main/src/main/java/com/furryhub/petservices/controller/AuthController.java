@@ -58,10 +58,4 @@ public class AuthController {
         authService.resetPassword(resetPasswordDTO.getToken(), resetPasswordDTO.getNewPassword());
         return ResponseEntity.ok("Password changed successfully.");
     }
-     
-     
-     
-     
-     
-     
 }
